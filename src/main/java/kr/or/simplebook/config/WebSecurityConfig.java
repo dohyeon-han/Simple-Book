@@ -1,5 +1,7 @@
 package kr.or.simplebook.config;
 
+import javax.servlet.Filter;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import kr.or.simplebook.successhandler.LoginSuccessHandler;
@@ -37,7 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// id,pw를 파라미터로 설정
 		// /loginprocess로 이동(post)
 		// 모든 유저의 접근 허용
-		http.formLogin()/*.loginPage("/login")*/.successHandler(new LoginSuccessHandler()).permitAll();
+		http.formLogin()/*.loginPage("/login")*/.successHandler(new LoginSuccessHandler()).permitAll()
+		.and().addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
 		
 
 		// 로그아웃 설정

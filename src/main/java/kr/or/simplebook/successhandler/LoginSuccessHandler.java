@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+// login 성공 시 세션에 등록
 public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 
 	@Override
