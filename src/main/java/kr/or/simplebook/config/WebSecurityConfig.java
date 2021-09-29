@@ -1,17 +1,20 @@
 package kr.or.simplebook.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import kr.or.simplebook.authenticationfilter.CustomAuthenticationFilter;
+import kr.or.simplebook.filter.CustomAuthenticationFilter;
 import kr.or.simplebook.handler.CustomLoginSuccessHandler;
 
 @EnableWebSecurity // spring security 활성화
@@ -30,17 +33,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// '/login'을 제외한 요청은 인증 요구
-		http.authorizeRequests().antMatchers("/login").permitAll().antMatchers("/").hasRole("USER") // USER,ADMIN만
-				.antMatchers("/admin").hasRole("ADMIN") // ADMIN만
-				.anyRequest().authenticated(); // 나머지는 권한이있어야 접근 가능
+		// 
+		http.authorizeRequests().anyRequest().permitAll();
 
 		// 로그인 설정
 		// login에서 로그인
 		// id,pw를 파라미터로 설정
 		// /loginprocess로 이동(post)
 		// 모든 유저의 접근 허용
-		http.formLogin()/* .loginPage("/login") */.successForwardUrl("/").permitAll().and()
+		http.formLogin()/* .loginPage("/login") */.defaultSuccessUrl("/").permitAll()
+				.usernameParameter("userEmail").passwordParameter("userPw").and()
 				.addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		// 로그아웃 설정
@@ -58,7 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
 		CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-		customAuthenticationFilter.setFilterProcessesUrl("/login");
+		customAuthenticationFilter.setFilterProcessesUrl("/");
+		// 로그인 성공 후 AuthenticationSuccessHandler 실행
 		customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
 		customAuthenticationFilter.afterPropertiesSet();
 		return customAuthenticationFilter;
@@ -67,6 +70,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public CustomLoginSuccessHandler customLoginSuccessHandler() {
 		return new CustomLoginSuccessHandler();
+	}
+
+	@Autowired
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("1234")).roles("ADMIN");
 	}
 
 }

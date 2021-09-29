@@ -11,15 +11,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import lombok.extern.log4j.Log4j2;
 
-// 처음 요청이 오면 AuthenticationFilter를 거치게 되는데,
-// 이때 아이디와 비밀번호를 기반으로 UserPasswordAuthenticationToken을 발급
-
+// 처음 요청이 오면 AuthenticationFilter를 지나
+// 아이디와 비밀번호를 기반으로 UserPasswordAuthenticationToken을 발급
+// AuthenticationManager로 인증 객체 전달
 @Log4j2
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-	public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+	public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {//생성자
 		super.setAuthenticationManager(authenticationManager);
 	}
 
+	// token 발급
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
