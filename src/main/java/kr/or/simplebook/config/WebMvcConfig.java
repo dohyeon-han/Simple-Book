@@ -3,6 +3,7 @@ package kr.or.simplebook.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -33,6 +34,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addViewControllers(final ViewControllerRegistry registry) {
 		System.out.println("addViewControllers가 호출됩니다. ");
 		registry.addViewController("/").setViewName("main");
+		registry.setOrder(Ordered.HIGHEST_PRECEDENCE); //최우선 순위
 	}
 
 	@Bean
