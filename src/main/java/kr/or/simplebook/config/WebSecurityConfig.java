@@ -16,20 +16,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import kr.or.simplebook.filter.JwtFilter;
+import kr.or.simplebook.filter.CustomAuthenticationFilter;
 import kr.or.simplebook.handler.CustomLoginSuccessHandler;
-import kr.or.simplebook.service.CustomUserDetailsService;
+import kr.or.simplebook.service.CustomUserDetailsServiceImpl;
 
 @EnableWebSecurity // spring security 활성화
 @Configuration // 설정 파일, bean 등록
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Autowired
-	private CustomUserDetailsService userDetailsService;
-	
-	@Autowired
-	private JwtFilter jwtFilter;
 
-	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -43,13 +37,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		//
-		http.authorizeRequests().anyRequest().permitAll().and()//토큰을 활용한 모든 요청 허용
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//Session 사용 안함
-		.and().formLogin().disable()
-		//UsernamePasswordAuthenticationFilter 보다 먼저 실행
-		.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
+		http.authorizeRequests().anyRequest().permitAll().and()// 토큰을 활용한 모든 요청 허용
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)// Session 사용 안함
+				.and().formLogin().disable()
+				// UsernamePasswordAuthenticationFilter 보다 먼저 실행
+				.addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-		
 		/*
 		 * // 로그인 설정 // login에서 로그인 // id,pw를 파라미터로 설정 // /loginprocess로 이동(post) // 모든
 		 * 유저의 접근 허용 http.formLogin() .loginPage("/login")
@@ -65,9 +58,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 */
 	}
 
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-	return super.authenticationManagerBean();
+	@Bean
+	public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
+		CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
+		customAuthenticationFilter.setFilterProcessesUrl("/user/login");
+		customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
+		customAuthenticationFilter.afterPropertiesSet();
+		return customAuthenticationFilter;
+	}
+
+	@Bean
+	public CustomLoginSuccessHandler customLoginSuccessHandler() {
+		return new CustomLoginSuccessHandler();
 	}
 
 	@Autowired
