@@ -1,24 +1,14 @@
 package kr.or.simplebook.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import kr.or.simplebook.filter.CustomAuthenticationFilter;
-import kr.or.simplebook.handler.CustomLoginSuccessHandler;
-import kr.or.simplebook.service.CustomUserDetailsServiceImpl;
 
 @EnableWebSecurity // spring security 활성화
 @Configuration // 설정 파일, bean 등록
@@ -36,45 +26,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		//
-		http.authorizeRequests().anyRequest().permitAll().and()// 토큰을 활용한 모든 요청 허용
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)// Session 사용 안함
-				.and().formLogin().disable()
-				// UsernamePasswordAuthenticationFilter 보다 먼저 실행
-				.addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-		/*
-		 * // 로그인 설정 // login에서 로그인 // id,pw를 파라미터로 설정 // /loginprocess로 이동(post) // 모든
-		 * 유저의 접근 허용 http.formLogin() .loginPage("/login")
-		 * .defaultSuccessUrl("/").permitAll()
-		 * .usernameParameter("userEmail").passwordParameter("userPw").and();
-		 * 
-		 * // 로그아웃 설정 /// logout으로 로그아웃 // 로그아웃 성공 시 /login으로 이동, // 세션 제거
-		 * http.logout().logoutRequestMatcher(new
-		 * AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
-		 * .invalidateHttpSession(true).deleteCookies();
-		 * 
-		 * // 권한없는 사용자 /denied로 이동 http.exceptionHandling().accessDeniedPage("/denied");
-		 */
+		http.csrf().disable() //
+				.authorizeRequests().antMatchers("/login*").permitAll()// login은 모든 사용자 접근 가능
+				.anyRequest().authenticated()
+			.and()
+				.formLogin().loginPage("/login") // login.jsp
+				.loginProcessingUrl("/doLogin") // post url
+				.defaultSuccessUrl("/") // 성공 후 url
+				.usernameParameter("id").passwordParameter("pw") // id, pw에 대한 파라미터
+				.successHandler(new LoginSuccessHandler()) // id를 세션에 저장
+				.failureHandler(new LoginFailureHandler())
+				.permitAll()
+			.and()
+				.logout().logoutUrl("/doLogout") // logout 요청 url
+				.logoutSuccessUrl("/login") // logout 후 url
+				.invalidateHttpSession(true) // 세션 삭제
+				.deleteCookies("true") // 쿠키 삭제
+			.and()
+				.exceptionHandling().accessDeniedPage("/login");// 접근 권한이 없을 때 접근 시 이동
 	}
 
-	@Bean
-	public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
-		CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-		customAuthenticationFilter.setFilterProcessesUrl("/user/login");
-		customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
-		customAuthenticationFilter.afterPropertiesSet();
-		return customAuthenticationFilter;
+	@Override
+	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("user1Pass")).roles("USER")
+				.and().withUser("user2").password(passwordEncoder().encode("user2Pass")).roles("USER").and()
+				.withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");
 	}
-
-	@Bean
-	public CustomLoginSuccessHandler customLoginSuccessHandler() {
-		return new CustomLoginSuccessHandler();
-	}
-
-	@Autowired
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("1234")).roles("ADMIN");
-	}
-
 }
