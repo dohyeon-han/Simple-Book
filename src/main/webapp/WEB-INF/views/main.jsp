@@ -10,5 +10,9 @@
 <body>
 	<h1>Hello world!</h1>
 	<h2>${sessionScope.id}님 안녕하세요!</h2>
+	<p>
+		<a href="/doLogout">로그아웃</a>
+	</p>
+	
 </body>
 </html>
