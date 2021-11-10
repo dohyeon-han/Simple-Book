@@ -5,9 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@ComponentScan(basePackages = {"kr.or.simplebook.dao", "kr.or.simplebook.service"})
+@ComponentScan(basePackages = {"kr.or.simplebook.dao", "kr.or.simplebook.service", "kr.or.simplebook.config"})
 @Import({WebSecurityConfig.class, DBconfig.class})
 public class ApplicationConfig {
 
 }
-A
