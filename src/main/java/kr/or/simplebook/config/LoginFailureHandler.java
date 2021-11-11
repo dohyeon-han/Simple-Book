@@ -14,6 +14,7 @@ import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 public class LoginFailureHandler implements AuthenticationFailureHandler {
@@ -24,10 +25,9 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 			throws IOException, ServletException {
 		
 		HttpSession session = request.getSession();
-		if (exception instanceof AuthenticationServiceException) {
-			session.setAttribute("loginFailMsg", "존재하지 않는 사용자입니다.");
-		
-		} else if(exception instanceof BadCredentialsException) {
+		if(exception instanceof BadCredentialsException ||
+				exception instanceof AuthenticationServiceException ||
+				exception instanceof UsernameNotFoundException) {
 			session.setAttribute("loginFailMsg", "아이디 또는 비밀번호가 틀립니다.");
 			
 		} else if(exception instanceof LockedException) {
