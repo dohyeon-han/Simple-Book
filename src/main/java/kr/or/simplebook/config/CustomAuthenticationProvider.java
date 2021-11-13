@@ -9,18 +9,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import kr.or.simplebook.service.CustomUserDatailService;
+import kr.or.simplebook.entity.CustomUserDetails;
+import kr.or.simplebook.service.CustomUserDetailsService;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
-	private CustomUserDatailService customUserDatailService;
+	CustomUserDetailsService customUserDetailsService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -34,8 +34,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			throw new UsernameNotFoundException(username);
 		}
 		
-		UserDetails user = customUserDatailService.getUserById(username);
-
+		CustomUserDetails user = customUserDetailsService.loadUserByUsername(username);
+		if(user==null)
+			throw new UsernameNotFoundException(username);
 		//pw »Æ¿Œ
 		if (!matchPassword(password, user.getPassword())) {
 			System.out.println("password not match");
@@ -58,7 +59,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		return true;
 	}
 
-	private boolean matchPassword(String loginPwd, String password) {
+	public boolean matchPassword(String loginPwd, String password) {
 		BCryptPasswordEncoder secure = new BCryptPasswordEncoder();
 		return secure.matches(loginPwd, password);
 	}

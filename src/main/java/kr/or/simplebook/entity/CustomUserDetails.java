@@ -16,7 +16,7 @@ public class CustomUserDetails implements UserDetails {
 	private String password;
 	// 개량함. (다중 권한 고려)
 	private List<GrantedAuthority> authorities;
-	private boolean enabled;
+	private boolean enabled = false;
 	public String getUsername() {
 		return username;
 	}
