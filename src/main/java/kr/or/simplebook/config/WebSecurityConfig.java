@@ -16,11 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private CustomAuthenticationProvider authProvider;
+	CustomAuthenticationProvider customAuthenticationProvider;
 
-	@Autowired
-	PasswordEncoder passwordEncoder;
-	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -35,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable() //
 				.authorizeRequests()
-				.antMatchers("/login*")
+				.antMatchers("/login**", "/join")
 				.permitAll()// login은 모든 사용자 접근 가능
 				.anyRequest()
 				.authenticated()
@@ -61,6 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authProvider);
+		auth.authenticationProvider(customAuthenticationProvider);
 	}
 }
