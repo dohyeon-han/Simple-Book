@@ -25,21 +25,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {// 인증에서 제외
-		web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
+		web.ignoring().antMatchers("/resources/**","/css/**", "/js/**", "/img/**", "/lib/**");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable() //
 				.authorizeRequests()
-				.antMatchers("/login**", "/join")
-				.permitAll()// login은 모든 사용자 접근 가능
+				.antMatchers("/login*", "/join*")
+				.anonymous()
 				.anyRequest()
 				.authenticated()
 			.and()
 				.formLogin()
 				.loginPage("/login") // login.jsp
-				.loginProcessingUrl("/doLogin") // post url
+				.loginProcessingUrl("/login") // post url
 				.defaultSuccessUrl("/") // 성공 후 url
 				.usernameParameter("id").passwordParameter("pw") // id, pw에 대한 파라미터
 				.successHandler(new LoginSuccessHandler()) // id를 세션에 저장
@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll()
 			.and()
 				.logout()
-				.logoutUrl("/doLogout") // logout
+				.logoutUrl("/logout") // logout
 				.logoutSuccessUrl("/login") // logout 후 url
 				.invalidateHttpSession(true) // 세션 삭제
 				.deleteCookies("true") // 쿠키 삭제
