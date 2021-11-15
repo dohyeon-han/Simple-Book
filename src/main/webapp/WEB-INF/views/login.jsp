@@ -8,14 +8,15 @@
 <title>Login</title>
 </head>
 <body>
-	<form action="/doLogin" method="post">
-		ID : <input type="text" name="id"><br> 
-		PW : <input type="password" name="pw"><br><br>
+	<form action="/login" method="post">
+		ID : <input type="text" name="id"><br> PW : <input
+			type="password" name="pw"><br>
+		<br>
 		<button type="submit">전송</button>
 	</form>
 	<button onclick="location.href='/join'">회원가입</button>
 	<c:if test="${param.error eq true}">
-		<p> ${loginFailMsg} </p>
+		<p>${loginFailMsg}</p>
 	</c:if>
 </body>
 </html>

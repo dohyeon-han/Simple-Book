@@ -7,10 +7,12 @@
 <title>회원가입</title>
 </head>
 <body>
-<form action="join" method="post">
-	ID : <input type="text" name="id">
-	PW : <input type="password" name="pw">
-	<button type="submit">가입하기</button>
+<form class = "join_form" method="post">
+	ID : <input type="text" class = "id" name="id">
+	PW : <input type="password" class = "pw" name="pw">
+	<button type="button" onclick="return join()">가입하기</button>
 </form>
+<script type="text/javascript" src="resources/js/join.js"
+		charset="utf-8"></script>
 </body>
 </html>
