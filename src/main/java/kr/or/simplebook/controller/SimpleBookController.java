@@ -1,15 +1,24 @@
 package kr.or.simplebook.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.simplebook.entity.CustomUserDetails;
+import kr.or.simplebook.entity.Message;
+import kr.or.simplebook.entity.Message.StatusEnum;
 import kr.or.simplebook.service.CustomUserDetailsService;
 
 @RestController
@@ -40,16 +49,21 @@ public class SimpleBookController {
 	}
 	
 	@PostMapping("/join")
-	public ModelAndView insertUser(@RequestParam("id") String id, @RequestParam("pw") String pw) {
-		CustomUserDetails user = customUserDatailService.joinUser(id,pw);
-		ModelAndView mav = new ModelAndView();
+	public ResponseEntity<Message> insertUser(@RequestBody Map<String, Object>param) {
+		CustomUserDetails user = customUserDatailService.joinUser((String)param.get("id"),(String)param.get("pw"));
+		Message msg = new Message(); 
+		msg.setStatus(StatusEnum.OK);
 		if(user == null) {
-			mav.setViewName("redirect:join");
+			msg.setMessage("same id exist");
 		}
 		else {
-			mav.setViewName("login");
+			msg.setMessage("success");
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", user.getUsername());
+			map.put("pw", user.getPassword());
+			msg.setData(map);
 		}
-		return mav;
+		return new ResponseEntity<Message>(msg,HttpStatus.OK);
 	}
 //	@PostMapping("/create")
 //	public ModelAndView createBook() {
