@@ -16,7 +16,7 @@ import kr.or.simplebook.interceptor.LogInterceptor;
 
 @Configuration//@bean, @component 들을 읽어 싱글톤으로 실행
 @EnableWebMvc
-@ComponentScan(basePackages = { "kr.or.simplebook.controller" }) // @component들을 읽음
+@ComponentScan(basePackages = { "kr.or.simplebook.controller","kr.or.simplebook.apiException" }) // @component들을 읽음
 public class WebMvcConfig implements WebMvcConfigurer {
 
 	// css~~, img~~, js~~로 오는 요쳥을 css/~ 에서 찾아라
