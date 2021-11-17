@@ -20,7 +20,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService, CustomU
 	PasswordEncoder passwordEncode; 
 
 	@Override
-	public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public CustomUserDetails loadUserByUsername(String username) {
 		CustomUserDetails user = userDetailsDao.selectUser(username);
 		return user;
 	}

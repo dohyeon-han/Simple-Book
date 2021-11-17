@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.simplebook.entity.CustomUserDetails;
 import kr.or.simplebook.entity.Message;
-import kr.or.simplebook.entity.Message.StatusEnum;
+import kr.or.simplebook.entity.StatusEnum;
 import kr.or.simplebook.service.CustomUserDetailsService;
 
 @RestController
