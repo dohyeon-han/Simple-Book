@@ -26,11 +26,11 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService, CustomU
 	}
 
 	@Transactional
-	public CustomUserDetails joinUser(String username, String password) {
-		CustomUserDetails user = null;
+	public CustomUserDetails joinUser(String username, String password){
+		CustomUserDetails user = new CustomUserDetails();
 		if (loadUserByUsername(username) == null) {
-			user = userDetailsDao.insertUser(username, passwordEncode.encode(password));
-			System.out.println("insert success");
+			userDetailsDao.insertUser(username, passwordEncode.encode(password));
+			userDetailsDao.insertAuth(username, "USER");
 			user.setUsername(username);
 			user.setPassword(password);
 			user.setAuthorities("USER");
