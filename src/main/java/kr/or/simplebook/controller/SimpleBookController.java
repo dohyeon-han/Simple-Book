@@ -28,8 +28,6 @@ import kr.or.simplebook.service.SimpleBookService;
 @RestController
 public class SimpleBookController {
 	
-	Logger logger = LoggerFactory.getLogger(this.getClass());
-	
 	@Autowired
 	CustomUserDetailsService customUserDatailService;
 		

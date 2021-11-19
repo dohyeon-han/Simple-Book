@@ -7,10 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form>
+<form class="form">
 	<p>제목 : <input type="text" name="title"></p>
     <p>카테고리 : 
-    <select class="category" name="category">
+    <select class="category" name="categoryId">
     </select></p>
     <p>가격 : <input type="text" name="price"></p>
     <p><button class="btn">저장</button>

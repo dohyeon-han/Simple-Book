@@ -2,6 +2,8 @@ package kr.or.simplebook.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +15,9 @@ public class Book {
 	String title;
 	int price;
 	int categoryId;
+	@JsonFormat(pattern = "yyyy-MM=dd kk:mm:ss")
 	LocalDateTime createDate;
+	@JsonFormat(pattern = "yyyy-MM=dd kk:mm:ss")
 	LocalDateTime updateDate;
 	
 	public Book() {
