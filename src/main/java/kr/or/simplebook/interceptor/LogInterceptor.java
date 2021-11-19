@@ -13,12 +13,13 @@ public class LogInterceptor extends HandlerInterceptorAdapter{
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		logger.debug("{} 이(가) 종료되었습니다. {} 을(를) view로 사용합니다.",handler.toString(),modelAndView.getViewName());
+		logger.debug("{} 이(가) 종료되었습니다",handler.toString());
 	}
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		logger.debug("Request URI \t: " + request.getRequestURI());
 		logger.debug("{} 이(가) 호출되었습니다.",handler.toString());
 		return true;
 	}
