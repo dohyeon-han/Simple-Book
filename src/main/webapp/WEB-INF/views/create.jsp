@@ -7,11 +7,15 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="create" method="post">
+<form>
 	<p>제목 : <input type="text" name="title"></p>
-    <p>카테고리 : <input type="text" name="category"></p>
+    <p>카테고리 : 
+    <select class="category" name="category">
+    </select></p>
     <p>가격 : <input type="text" name="price"></p>
-    <p><input type="submit" value="저장" />
+    <p><button class="btn">저장</button>
 </form>
+<script type="text/javascript" src="resources/js/create.js"
+		charset="utf-8"></script>
 </body>
 </html>

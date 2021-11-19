@@ -11,6 +11,12 @@
 	<h1>Hello world!</h1>
 	<h2>${sessionScope.id}님 안녕하세요!</h2>
 	<p>
+		<a href="/list">목록</a>
+	</p>
+	<p>
+		<a href="/logout">로그아웃</a>
+	</p>
+	<p>
 		<a href="/logout">로그아웃</a>
 	</p>
 	
