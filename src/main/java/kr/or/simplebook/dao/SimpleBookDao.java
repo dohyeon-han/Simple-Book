@@ -1,5 +1,6 @@
 package kr.or.simplebook.dao;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,5 +54,9 @@ public class SimpleBookDao {
 		param.put("start", start);
 		param.put("end", end);
 		return jdbc.query(SELECT_BOOKS_PAGING, param, bookMapper);
+	}
+	
+	public int countBook() {
+		return jdbc.queryForObject(COUNT_BOOKS, Collections.emptyMap() ,int.class);
 	}
 }

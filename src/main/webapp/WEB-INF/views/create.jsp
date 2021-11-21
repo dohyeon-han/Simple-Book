@@ -14,6 +14,9 @@
     </select></p>
     <p>가격 : <input type="text" name="price"></p>
     <p><button class="btn">저장</button>
+    <p>
+		<a href="/list">목록</a>
+	</p>
 </form>
 <script type="text/javascript" src="resources/js/create.js"
 		charset="utf-8"></script>

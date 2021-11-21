@@ -16,9 +16,5 @@
 	<p>
 		<a href="/logout">로그아웃</a>
 	</p>
-	<p>
-		<a href="/logout">로그아웃</a>
-	</p>
-	
 </body>
 </html>

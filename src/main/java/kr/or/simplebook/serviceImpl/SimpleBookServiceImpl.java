@@ -33,4 +33,8 @@ public class SimpleBookServiceImpl implements SimpleBookService{
 	public List<Book> selectBookPaging(int start, int end) {
 		return simpleBookDao.selectBooksPaging(start, end);
 	}
+	
+	public int countBooks() {
+		return simpleBookDao.countBook();
+	}
 }

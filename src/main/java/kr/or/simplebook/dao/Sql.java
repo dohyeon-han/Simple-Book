@@ -5,7 +5,8 @@ public class Sql {
 			+ "FROM users WHERE username = :username";
 	public static final String INSERT_USER = "INSERT INTO users VALUES(:username, :password, :enable)";
 	public static final String INSERT_AUTH = "INSERT INTO authorities VALUES(:username, :auth)";
-	public static final String SELECT_BOOKS_PAGING = "SELECT title, price, category, create_date, update_date "
+	public static final String SELECT_BOOKS_PAGING = "SELECT book_id, title, price, category, category_id, create_date, update_date "
 			+ "FROM book JOIN categories USING(category_id) LIMIT :start, :end";
 	public static final String SELECT_CATEGORIES = "SELECT category_id, category FROM categories";
+	public static final String COUNT_BOOKS = "SELECT COUNT(*) FROM BOOK";
 }

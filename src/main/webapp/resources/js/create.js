@@ -1,11 +1,11 @@
 function getCategories() {
 	const option = {
-		method: "POST",
+		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
 		}
 	};
-	requestAjax("category/select", option, (object) => {
+	requestAjax("api/category/select", option, (object) => {
 		const categories = object.data;
 		categories.forEach((cate) => {
 			const select = document.querySelector(".category");
@@ -28,7 +28,7 @@ function create(target) {
 		},
 		body: JSON.stringify(object)
 	};
-	requestAjax("./create", option, (object) => {
+	requestAjax("api/create", option, (object) => {
 		if (object.status == "OK") {
 			alert("저장되었습니다.")
 			location.replace("./list")

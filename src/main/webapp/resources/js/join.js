@@ -6,7 +6,7 @@ function join() {
 		id : id,
 		pw : pw
 	};
-	requestAjax(`./join`, data, (object) => {
+	requestAjax(`/api/join`, data, (object) => {
 		if(object.message==="same id exist"){
 			alert("중복된 ID입니다.")
 		}
