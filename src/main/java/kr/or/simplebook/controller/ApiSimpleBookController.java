@@ -32,7 +32,7 @@ public class ApiSimpleBookController {
 	@Autowired
 	SimpleBookService simpleBookService;
 	
-	@PostMapping("/join")
+	@PostMapping("/post/join")
 	public ResponseEntity<Message> insertUser(@RequestBody Map<String, Object> param) {
 		CustomUserDetails user = customUserDetailsService.joinUser((String) param.get("id"), (String) param.get("pw"));
 		Message msg = new Message();
@@ -49,7 +49,7 @@ public class ApiSimpleBookController {
 		return new ResponseEntity<Message>(msg, HttpStatus.OK);
 	}
 	
-	@GetMapping("/category/get")
+	@GetMapping("/get/category")
 	public ResponseEntity<Message> selectCategory() {
 		List<Category> categories = simpleBookService.selectCategories();
 		Message msg = new Message();
@@ -59,7 +59,7 @@ public class ApiSimpleBookController {
 		return new ResponseEntity<Message>(msg, HttpStatus.OK);
 	}
 	
-	@PostMapping("/book/post")
+	@PostMapping("/post/book")
 	public ResponseEntity<Message> createBook(@RequestBody Book param) {
 		int insert = simpleBookService.insertBook(param);
 		Message msg = new Message();
@@ -75,7 +75,7 @@ public class ApiSimpleBookController {
 		}
 	}
 	
-	@GetMapping("/list/{page}")
+	@GetMapping("/get/list/{page}")
 	public ResponseEntity<Message> list(@PathVariable("page") int page){
 		final int ROW = 10;  
 		int start = (page-1)*ROW;
@@ -92,7 +92,7 @@ public class ApiSimpleBookController {
 		return new ResponseEntity<Message>(msg,HttpStatus.OK);
 	}
 	
-	@GetMapping("/book/{id}")
+	@GetMapping("/get/book/{id}")
 	public ResponseEntity<Message> selectBook(@PathVariable("id") int id){
 		Book book = simpleBookService.selectBookById(id);
 		Message msg = new Message();
@@ -102,13 +102,13 @@ public class ApiSimpleBookController {
 		return new ResponseEntity<Message>(msg,HttpStatus.OK);
 	}
 	
-	@PutMapping("/put/{id}")
-	public ResponseEntity<Message> updateBook(@PathVariable("id") int id){
-		Book book = simpleBookService.selectBookById(id);
+	@PutMapping("/put/book")
+	public ResponseEntity<Message> updateBook(@RequestBody Book param){
+		simpleBookService.updateBook(param);
 		Message msg = new Message();
 		msg.setStatus(StatusEnum.OK);
 		msg.setMessage("success");
-		msg.setData(book);
+		msg.setData(param);
 		return new ResponseEntity<Message>(msg,HttpStatus.OK);
 	}	
 }

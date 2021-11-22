@@ -11,4 +11,6 @@ public class Sql {
 	public static final String COUNT_BOOKS = "SELECT COUNT(*) FROM BOOK";
 	public static final String SELECT_BOOK_BY_ID = "SELECT * FROM categories JOIN book USING(category_id)"
 			+ " WHERE book_id = :id";
+	public static final String UPDATE_BOOK = "UPDATE book SET title = :title, category_id = :categoryId, "
+			+ "price = :price, update_date = :updateDate WHERE book_id = :bookId";
 }

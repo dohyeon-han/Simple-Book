@@ -67,6 +67,10 @@ public class SimpleBookDao {
 		}catch(EmptyResultDataAccessException e) {
 			return null;
 		}
-		
+	}
+	
+	public int updateBook(Book book) {
+		SqlParameterSource param = new BeanPropertySqlParameterSource(book);
+		return jdbc.update(UPDATE_BOOK, param);
 	}
 }

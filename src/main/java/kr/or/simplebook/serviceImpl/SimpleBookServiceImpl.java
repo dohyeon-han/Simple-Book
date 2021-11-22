@@ -41,4 +41,8 @@ public class SimpleBookServiceImpl implements SimpleBookService{
 	public Book selectBookById(int id) {
 		return simpleBookDao.selectBookById(id);
 	}
+	
+	public int updateBook(Book book) {
+		return simpleBookDao.updateBook(book);
+	}
 }

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Create</title>
+<title>Update</title>
 </head>
 <body>
 <form class="form">
@@ -13,12 +13,12 @@
     <select class="category" name="categoryId">
     </select></p>
     <p>가격 : <input type="text" name="price"></p>
-    <p><button class="btn">저장</button>
+    <p><button class="btn">수정</button>
     <p>
 		<a href="/list">목록</a>
 	</p>
 </form>
-<script type="text/javascript" src="/resources/js/create.js"
+<script type="text/javascript" src="/resources/js/update.js"
 		charset="utf-8"></script>
 </body>
 </html>

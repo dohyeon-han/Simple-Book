@@ -14,6 +14,8 @@
 				<td>제목</td>
 				<td>카테고리</td>
 				<td>가격</td>
+				<td></td>
+				<td></td>
 			</tr>
 		</thead>
 		<tbody class="list">

@@ -12,4 +12,5 @@ public interface SimpleBookService {
 	public List<Book> selectBookPaging(int start, int end);
 	public int countBooks();
 	public Book selectBookById(int id);
+	public int updateBook(Book book);
 }
