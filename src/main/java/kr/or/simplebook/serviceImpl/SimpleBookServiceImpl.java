@@ -37,4 +37,8 @@ public class SimpleBookServiceImpl implements SimpleBookService{
 	public int countBooks() {
 		return simpleBookDao.countBook();
 	}
+	
+	public Book selectBookById(int id) {
+		return simpleBookDao.selectBookById(id);
+	}
 }

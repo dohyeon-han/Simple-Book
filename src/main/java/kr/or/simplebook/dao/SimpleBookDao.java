@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -58,5 +59,14 @@ public class SimpleBookDao {
 	
 	public int countBook() {
 		return jdbc.queryForObject(COUNT_BOOKS, Collections.emptyMap() ,int.class);
+	}
+	
+	public Book selectBookById(int id) {
+		try {
+			return jdbc.queryForObject(SELECT_BOOK_BY_ID, Collections.singletonMap("id", id), bookMapper);
+		}catch(EmptyResultDataAccessException e) {
+			return null;
+		}
+		
 	}
 }

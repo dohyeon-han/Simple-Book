@@ -9,4 +9,6 @@ public class Sql {
 			+ "FROM book JOIN categories USING(category_id) LIMIT :start, :end";
 	public static final String SELECT_CATEGORIES = "SELECT category_id, category FROM categories";
 	public static final String COUNT_BOOKS = "SELECT COUNT(*) FROM BOOK";
+	public static final String SELECT_BOOK_BY_ID = "SELECT * FROM categories JOIN book USING(category_id)"
+			+ " WHERE book_id = :id";
 }

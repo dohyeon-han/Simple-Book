@@ -47,4 +47,9 @@ public class SimpleBookController {
 	public ModelAndView list(@PathVariable(value = "page",required = false) Optional<Integer> page) {
 		return new ModelAndView("/list");
 	}
+	
+	@GetMapping(value = {"/update/{page}"})
+	public ModelAndView update(@PathVariable(value = "page") Integer page) {
+		return new ModelAndView("/update");
+	}
 }

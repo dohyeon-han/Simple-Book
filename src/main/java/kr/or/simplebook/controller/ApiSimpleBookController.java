@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,23 +49,23 @@ public class ApiSimpleBookController {
 		return new ResponseEntity<Message>(msg, HttpStatus.OK);
 	}
 	
-	@GetMapping("/category/select")
+	@GetMapping("/category/get")
 	public ResponseEntity<Message> selectCategory() {
 		List<Category> categories = simpleBookService.selectCategories();
 		Message msg = new Message();
 		msg.setStatus(StatusEnum.OK);
-		msg.setMessage("OK");
+		msg.setMessage("success");
 		msg.setData(categories);
 		return new ResponseEntity<Message>(msg, HttpStatus.OK);
 	}
 	
-	@PostMapping("/create")
+	@PostMapping("/book/post")
 	public ResponseEntity<Message> createBook(@RequestBody Book param) {
 		int insert = simpleBookService.insertBook(param);
 		Message msg = new Message();
 		if (insert == 1) {
 			msg.setStatus(StatusEnum.OK);
-			msg.setMessage("OK");
+			msg.setMessage("success");
 			msg.setData(param);
 			return new ResponseEntity<Message>(msg, HttpStatus.OK);
 		} else {
@@ -86,8 +87,28 @@ public class ApiSimpleBookController {
 		map.put("book", book);
 		Message msg = new Message();
 		msg.setStatus(StatusEnum.OK);
-		msg.setMessage("OK");
+		msg.setMessage("success");
 		msg.setData(map);
 		return new ResponseEntity<Message>(msg,HttpStatus.OK);
 	}
+	
+	@GetMapping("/book/{id}")
+	public ResponseEntity<Message> selectBook(@PathVariable("id") int id){
+		Book book = simpleBookService.selectBookById(id);
+		Message msg = new Message();
+		msg.setStatus(StatusEnum.OK);
+		msg.setMessage("success");
+		msg.setData(book);
+		return new ResponseEntity<Message>(msg,HttpStatus.OK);
+	}
+	
+	@PutMapping("/put/{id}")
+	public ResponseEntity<Message> updateBook(@PathVariable("id") int id){
+		Book book = simpleBookService.selectBookById(id);
+		Message msg = new Message();
+		msg.setStatus(StatusEnum.OK);
+		msg.setMessage("success");
+		msg.setData(book);
+		return new ResponseEntity<Message>(msg,HttpStatus.OK);
+	}	
 }
