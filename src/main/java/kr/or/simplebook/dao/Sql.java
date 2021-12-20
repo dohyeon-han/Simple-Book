@@ -13,4 +13,5 @@ public class Sql {
 			+ " WHERE book_id = :id";
 	public static final String UPDATE_BOOK = "UPDATE book SET title = :title, category_id = :categoryId, "
 			+ "price = :price, update_date = :updateDate WHERE book_id = :bookId";
+	public static final String DELETE_BOOK = "DELETE FROM book WHERE book_id = :bookId";
 }

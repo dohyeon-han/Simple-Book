@@ -45,4 +45,8 @@ public class SimpleBookServiceImpl implements SimpleBookService{
 	public int updateBook(Book book) {
 		return simpleBookDao.updateBook(book);
 	}
+	
+	public int deleteBookById(int id) {
+		return simpleBookDao.deleteBookById(id);
+	}
 }

@@ -13,4 +13,5 @@ public interface SimpleBookService {
 	public int countBooks();
 	public Book selectBookById(int id);
 	public int updateBook(Book book);
+	public int deleteBookById(int id);
 }

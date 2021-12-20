@@ -1,12 +1,17 @@
 package kr.or.simplebook.controller;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -110,5 +115,22 @@ public class ApiSimpleBookController {
 		msg.setMessage("success");
 		msg.setData(param);
 		return new ResponseEntity<Message>(msg,HttpStatus.OK);
-	}	
+	}
+	
+	@DeleteMapping("/delete/book/{id}")
+	public ResponseEntity<Message> deleteBook(@PathVariable("id") int id){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Message msg = new Message();
+		
+		msg.setData(id);
+		if(!authentication.getPrincipal().equals("admin")) {
+			msg.setStatus(StatusEnum.BAD_REQUEST);
+			msg.setMessage("only admin delete");
+			return new ResponseEntity<Message>(msg,HttpStatus.BAD_REQUEST);
+		}
+		simpleBookService.deleteBookById(id);
+		msg.setStatus(StatusEnum.OK);
+		msg.setMessage("success");
+		return new ResponseEntity<Message>(msg,HttpStatus.OK);
+	}
 }
