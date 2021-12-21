@@ -21,6 +21,7 @@
 		<tbody class="list">
 		</tbody>
 	</table>
+	<p class="num"></p>
 	<p>
 		<a href="/">∏ﬁ¿Œ</a>
 	</p>

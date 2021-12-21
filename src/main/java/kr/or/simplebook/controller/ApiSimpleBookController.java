@@ -82,13 +82,14 @@ public class ApiSimpleBookController {
 	
 	@GetMapping("/get/list/{page}")
 	public ResponseEntity<Message> list(@PathVariable("page") int page){
-		final int ROW = 10;  
+		final int ROW = 3;  
 		int start = (page-1)*ROW;
-		int end = page*ROW-1;
+		int end = page*ROW;
 		List<Book> book = simpleBookService.selectBookPaging(start, end);
 		int count = simpleBookService.countBooks();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("totalCount", count);
+		map.put("row", ROW);
 		map.put("book", book);
 		Message msg = new Message();
 		msg.setStatus(StatusEnum.OK);

@@ -1,7 +1,4 @@
 function getList(page) {
-	const data = {
-		page: page
-	}
 	const option = {
 		method: "GET",
 		headers: {
@@ -10,6 +7,13 @@ function getList(page) {
 	};
 	requestAjax(`/api/get/list/${page}`, option, (object) => {
 		let table = document.querySelector(".list")
+		const num = document.querySelector(".num");
+		for(var i=1;i<=object.data.totalCount/object.data.row;i++){
+			let a = document.createElement("a");
+			a.innerText = i;
+			a.setAttribute("href", `/list/${i}`);
+			num.append(a);
+		}
 		object.data.book.forEach((book) => {
 			let tr = document.createElement("tr")
 			let title = document.createElement("td")
@@ -74,16 +78,27 @@ function addDeleteBook(){
 				requestAjax(`/api/delete/book/${e.target.id}`, option, () => {
 					alert("삭제되었습니다.")
 					location.replace(location.href);
-				}, () => {
-					alert("오류가 발생했습니다.")
-					location.replace(location.href);
+				}, (err) => {
+					if(err.status=="BAD_REQUEST")
+						alert("관리자만 삭제할 수 있습니다.");
+					else 
+						alert("오류가 발생했습니다.")
 				})
 			}
 		}
 	})
 }
 
+function movePage(){
+	const num = document.querySelector(".num");
+	num.addEventListener("click",(e)=>{
+		getlist(e.target);
+	})
+}
+
 document.addEventListener("DOMContentLoaded", function() {
-	getList(1);
+	let url = window.location.href;
+	let page = url.split('/').pop();
+	getList(page);
 	addDeleteBook();
 })
