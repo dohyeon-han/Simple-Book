@@ -8,6 +8,5 @@
     * HTML
     * JavaScript
     * MySql
-    
-![](2021-12-22-16-24-34.png)
 
+![image](https://user-images.githubusercontent.com/63232876/147052832-29e7e6f9-771f-4d5d-a85a-8769059fafe6.png)
